@@ -73,3 +73,11 @@ enc=$(kubectl --namespace default create secret generic oauth2-proxy-secret --dr
 ```
 helm install oauth2-proxy oauth2-proxy-chart
 ```
+## Refrences
+https://hub.docker.com/_/mongo-express <br />
+https://hub.docker.com/_/mongo <br />
+https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest <br />
+https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest <br />
+https://github.com/bitnami-labs/sealed-secrets <br />
+https://kubernetes.github.io/ingress-nginx/deploy/ <br />
+https://kubernetes.github.io/ingress-nginx/examples/auth/oauth-external-auth/
