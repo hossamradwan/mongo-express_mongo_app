@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: {{ .Values.name }}
+  name: {{ .Values.name }}
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        k8s-app: {{ .Values.name }}
+    spec:
+      containers:
+      - args:
+        - --provider=github
+        - --email-domain=""
+        - --upstream=file:///dev/null
+        - --http-address=0.0.0.0:4180
+        - --scope=user:email
+        - --authenticated-emails-file=/etc/oauth2-proxy/authenticated-emails.txt
+        env:
+        - name: OAUTH2_PROXY_CLIENT_ID
+          value: {{ .Values.OAUTH2_PROXY_CLIENT_ID }}
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secretName }}
+              key: OAUTH2_PROXY_CLIENT_SECRET
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: {{ .Values.OAUTH2_PROXY_COOKIE_SECRET }}
+        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        imagePullPolicy: Always
+        name: oauth2-proxy
+        ports:
+        - containerPort: 4180
+          protocol: TCP
+        volumeMounts:
+        - name: authenticated-emails
+          mountPath: /etc/oauth2-proxy/authenticated-emails.txt
+          subPath: authenticated-emails.txt
+      volumes:
+      - name: authenticated-emails
+        configMap:
+          name: authenticated-emails-configmap
+          defaultMode: 420

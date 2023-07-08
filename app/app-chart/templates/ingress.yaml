@@ -1,0 +1,54 @@
+{{- if.Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
+  name: {{ .Values.name }}-ingress
+  namespace: {{ .Values.namespace }}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.name }}-service
+            port:
+              number: {{ .Values.servicePort }}
+  # if you have a trusted certificate
+  # tls:
+  # - hosts:
+  #   - {{ .Values.ingress.host }}
+  #   secretName: <the secret that contains tls.crt and tls.key values 
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth2-proxy
+  namespace: {{ .Values.namespace }}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /oauth2
+        pathType: Prefix
+        backend:
+          service:
+            name: oauth2-proxy-service
+            port:
+              number: 4180
+  # if you have a trusted certificate
+  # tls:
+  # - hosts:
+  #   - {{ .Values.ingress.host }}
+  #   secretName: <the secret that contains tls.crt and tls.key values 
+  {{- end }}
+    
