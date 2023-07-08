@@ -60,7 +60,7 @@ helm install -f app/app-values/mongo-express-values.yaml mongo-express app/app-c
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
 ```
 2- Connect host url to the load balancer associated with the ingress using Route 53
-## Authenticatoin
+## Authentication
 1- Create OAuth app on github. <br />
 2- Copy the Client ID from githup and paste it as a value of OAUTH2_PROXY_CLIENT_ID in oauth2-proxy-chart/values.yaml <br />
 3- Create a Client secret from the github OAuth app and copy it & use the following command which encrypts Client secret value & add it as a value of OAUTH2_PROXY_CLIENT_SECRET in oauth2-proxy-chart/values.yaml
