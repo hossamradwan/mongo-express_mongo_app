@@ -9,7 +9,7 @@ terraform init
 terraform apply
 ```
 Notes: <br />
-1- terrafrom uses the aws credential stored in ./aws/credentials. <br />
+1- terrafrom uses the aws credential stored in ~/.aws/credentials. <br />
 2- If you don't want to use terraform remote state, comment lines 1:9 in terraform/providers.tf <br />
 <br />
 To connect to the cluster:<br />
