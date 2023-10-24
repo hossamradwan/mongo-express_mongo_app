@@ -25,7 +25,7 @@ spec:
         helm:
           releaseName: "{{path.basename}}-dev"
           valueFiles:
-            - app/app-values/{{path.basename}}/values.yaml 
+            - /app/app-values/{{path.basename}}/values.yaml 
         path: app/app-chart
         repoURL: https://github.com/hossamradwan/mongo-express_mongo_app
         targetRevision: HEAD
