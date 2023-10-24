@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
 
-  cluster_name    = "mongo-eks-cluster"
+  cluster_name    = "mongo-cluster"
   cluster_version = "1.25"
 
   cluster_endpoint_public_access  = true

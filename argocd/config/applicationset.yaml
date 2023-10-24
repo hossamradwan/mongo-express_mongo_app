@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dev-applicationset
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/hossamradwan/mongo-express_mongo_app
+        revision: HEAD
+        directories:
+          - path: app/app-values/*
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-options: Prune=true
+        argocd.argoproj.io/manifest-generate-paths: "/app/app-values/{{path.basename}}"
+      labels: 
+        namespace: default
+      namespace: argocd
+      name: "{{path.basename}}-dev" 
+    spec:
+      project: dev
+      source:
+        helm:
+          releaseName: "{{path.basename}}-dev"
+          valueFiles:
+            - app/app-values/{{path.basename}}/values.yaml 
+        path: app-chart
+        repoURL: https://github.com/hossamradwan/mongo-express_mongo_app
+        targetRevision: HEAD
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "default"
+      syncPolicy:
+        syncOptions:
+        - ApplyOutOfSyncOnly=true
+        automated:
+          prune: true

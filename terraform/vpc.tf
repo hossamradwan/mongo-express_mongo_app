@@ -25,12 +25,12 @@ module "myapp-vpc" {
 
     #help tell cloud controller manager which vpc it should connect to
     tags = {
-        "kubernetes.io/cluster/mongo-eks-cluster" = "shared"
+        "kubernetes.io/cluster/mongo-cluster" = "shared"
     }
 
     public_subnet_tags = {
         #help tell cloud controller manager which subnets it should connect to
-        "kubernetes.io/cluster/mongo-eks-cluster" = "shared"
+        "kubernetes.io/cluster/mongo-cluster" = "shared"
 
         # put load balancer in the public subnets
         "kubernetes.io/role/elb" = 1 
@@ -38,7 +38,7 @@ module "myapp-vpc" {
 
     private_subnet_tags = {
         #help tell cloud controller manager which subnets it should connect to
-        "kubernetes.io/cluster/mongo-eks-cluster" = "shared"
+        "kubernetes.io/cluster/mongo-cluster" = "shared"
 
         # put internal load balancer in the private subnets
         "kubernetes.io/role/internal-elb" = 1 

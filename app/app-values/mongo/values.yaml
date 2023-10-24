@@ -1,0 +1,31 @@
+name: mongodb
+namespace: default
+imageName: mongo
+env:
+  - name: MONGO_INITDB_ROOT_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mongodb-secret
+        key: mongo-root-username
+  - name: MONGO_INITDB_ROOT_PASSWORD
+    valueFrom: 
+      secretKeyRef:
+        name: mongodb-secret
+        key: mongo-root-password
+
+
+serviceType: ClusterIP
+serviceProtocol: TCP
+servicePort: 27017
+serviceTargetPort: 27017
+ingress:
+  enabled: false
+
+configmap:
+  enabled: false
+
+secretName: mongodb-secret
+secretType: Opaque
+mongoRootUsername: AgCOudN8e5HfJmnQ5LhI4pf/HOUnTndstgt/RWIFAfyx1TN3gBUZMhvY7k8rSKUXY05PVy0AhKGK5akTjnpGxST1KhfQ1kxyYqv1FFLuUqYt11lrMB+p91JmVyYp8XDBFVaWDDNb2ZYn+lDBTgrkOP9MXP9wkosV+WxcPglM9Wd3X0ZDSTL2DBOFaHGXH1+jrJiwd5yF1WESVRaB1gDtNkbhxLUuVwCTJMfmRIbiimduFsQpzoJB+gDdwEOXRsFeEIyqDR0ELGjbumioM1zHezD/2ArHUv5a4ZZV0116Ut1VgJrCqh8jetj46N99fvoSN39aIstrc7lAJP++aR8Hr+EdJ2xTrKj9jK8dP9BZ3OhA/FsevNbx5VQT/HBNoEdHkCNxhNDfcUfLNFttSQP+zX3w/v0FJFHPnobYWMlJwEkvjKvWftGXX6MLMp2rQnz1POpw7SzUn/LcnaK063XoL29cZds+1LByi6/endsq8oK05Gt+9lslMS9JM96a+0aJqOP0hRhfVK1vnbEycZF6qUjxL2hSad+oui6LnizudBXzldRlVUqccRG2HrlJnX+y2+IFTBZZhpbM/Qg5QOP1LrUhumhmvkp9oLgZPvChH/KeMzE4D7SbNGBmHvRrwIfsCmXa8URboyCZGVW9khsQD6LDoZ1Jly+ouQIb8D/79v7O13ywLICxg38BlbmtrGd2plx7bOvpTiH+jQ==
+mongoRootPassword: AgCeCTci8+QDFrBNN8EpNFQ6GMt4RhazZtEGLgHMoF8RUmsbVDbSWl2kU3Nqnb4yOVmkE4QPTRtiv8XCCAbxkWmb6vmy7tceelNzca00oQ7lJgHL4bqXE+YA1Rpd7SEcMCJwWNRbe6hBbwuMV8gGSpdkT9tfdRHjw0xAljSEz5Sy2ncnPXhJsTM5oCMIPsiIg9CXvTTixKBfNZS5OOdA19v4nILNURS/f/FdqpCw5jWHKo+Bn45F3bwke6XjqMSxgVmjYPnkebppiFG4eOXagt1jBtBpiHcEl00karshPIwnfIzVXnJd026/MJXHtb84ukpwQU6XY41hK+5Ly/5uto8brf3zTxfHwVA+wmjTKuAqTDIqlHidkvBXYsXmzZjozot+PALjs7w0k6P7ONwzaYlN+ga0e6oU8Dfdym7/fv6A0ii8ljEYgRthOHsQaoZ09RD2xiCE2DptqWl8ujhzlZjhx8UNoRfQkOQAZRKXytZuCfLvZHcAzNZxXC27SHnMW+MU6EJ17midhCv18sx4ySb1VxRAYC2SyGWAmqIYCKv4n1wI0qzQtIm4KrJiJ4O1TUjj/KUxjcRdeUff1n/r9GqA6mN25HY+MsCgMUnCRpdp9BqYGgY7Km2O1+ZVShz8e8NrdF9l2rLu4XNnSXoDacTlSiF3WPf/VirD9G36oTPQHsBuznn3vQdwaCNdYpqeR6OVUdxCa1o91Q==
+

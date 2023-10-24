@@ -1,0 +1,38 @@
+name: mongo-express
+namespace: default
+imageName: mongo-express:1.0.0-alpha.4
+env:
+  - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mongo-express-secret
+        key: mongo-root-username
+  - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+    valueFrom: 
+      secretKeyRef:
+        name: mongo-express-secret
+        key: mongo-root-password
+  - name: ME_CONFIG_MONGODB_SERVER
+    valueFrom: 
+      configMapKeyRef:
+        name: mongodb-configmap
+        key: database_url
+
+
+serviceType: ClusterIP
+serviceProtocol: TCP
+servicePort: 80
+serviceTargetPort: 8081
+ingress:
+  enabled: true 
+  host: app.testmydemoapp.com
+
+configmap:
+  enabled: true
+  configmapName: mongodb
+  database_url: mongodb-service
+
+secretName: mongo-express-secret
+secretType: Opaque
+mongoRootUsername: AgCKxqXtg6nEzDZjdDGKqO1qBiyZVm4fK6KQHA+uOzs/Qj5XdTVzyATOnhWqZQ48giSXYKg3g3HvIsLQn2MqV1uZWxB+N9RICJ2S9nCdk4kjo5Rn3qZLySyXZwcfYcXz0t5ek+zwHhZJ0k/2m0EAKlftsPYVbl3czmM9rsVp3G36PGRv6J0Es0bQhhN/HvuhCYSbAKGpaI/SOYKSbI1Wes/Ymctpn0vxayP50qPEvPx/HRC5HmyF04ZVpLQwUmr8vnbWwVcm1idlWSGrt6BdYazoW/L5Sny1MX4sqBwWszF9aVcsU3fUhV5bFtoQvxnG/e7LGye45nVRnEHXQ4a0CBw45Bos3wbQvq0aMsEqgTFdoT7OxcrS5xvlS6GOsWQR2Z8m2/WRXp6SUTUjcAPvnqgRyYwXpVP6Qc5FUgDTHdeUwXil+NgC4wmCEu3R/HI1csYVvjlAuxHb4dBuvSE16sM6bvl1rUMpI40BdtBCUt3bNvZfmZMa6CcwmUZYYC4BBpyRLTk3i+qXaXJFjYHkdm1VVv6KSXXyKJUJS92dxoI3ilZgC107G959eyOHPbH/aM6B7WBFDEDVRGN/kzongi70XFMIulcQgWK19L0dO1hBvA75kA20GN86eLIMK64c5W2K2DoLvcYTcsd+sLmr5q0NOfE5i20gnlUJV24TpOGPUGtr1k4Mq7t+reetVV9AOT5UCK+Hwg5bFw==
+mongoRootPassword: AgB+qqHElaHAZ3qeYJy2XttNjn9XQI95XZboNXWdx8CZ6Ol6vAFIv9nZadZWWVt6wc9NZH1F2zlpVzE11Gu964W0roz1GQKbumK3Zd9JhHlv/3l7j5UGLXqt6hjHjYEXn44Rr5Dw055wIiFjRpquugjFHFqcaavcbWMBlBL2DiGgKk8BKdzS7FWUd2f+EZ6+m/bWvd1/XoG0ly109AkzNH2d0DQAyjhjnRc5EMLfW/STP5Zs3fb5naZLkszjWD9CTOhfsXc9Jt/VOund/Jv78pOIeOiUqOOrhgh1zVtoAdBzb82rVmtcLrIo282jR3kN2biWK37qYQVW8PCgp+ByF/uQ4x8nFfjxp4h+qzmQy+c8K2gIG3iyjK7MPcVN0hbYhPagHAysylBkaYNPLOJXeKAAl+9oCapdyoHULZybtcHqZuiXd78j23SVFiooPT4J8tzjwDIfySeZcGAS5u6JpYZSt97r4l8XKJfSX0DIzJgcWpeCool7pXRcoDMepdLiiuibCjd6C7iacQ3JLbayPc0rZiB5RkepbFjzlHd3rVhE+iJIDz35Iq9Jo9Odo2BW5zp8dCKtctLvRtGgzZHS7m1u688Qy1050hFzXzYaYYXIr+5PAhThfJzxB/ygH1rXdKnPHoThO281HNaXhSOQALa1gCEyzv7HsjGhVQNyDXSzuPknpndWIwCj2ekwn1fJ7Jy6vVTxVxzZng==

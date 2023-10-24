@@ -1,12 +1,12 @@
-terraform { # "terraform" block is used to configure information and metadata about terraform itself
-  required_version = ">=1.4.5" 
-  backend "s3" { 
-    # S3 is a storage in AWS used to store files
-    bucket = <bucket-name> # must exist in the AWS account
-    key = "mymongoapp/state.tfstate"  #path inside the bucket
-    region = "eu-west-1" # no need to be in same region of created server and its resources
-   }
-}
+# terraform { # "terraform" block is used to configure information and metadata about terraform itself
+#   required_version = ">=1.4.5" 
+#   backend "s3" { 
+#     # S3 is a storage in AWS used to store files
+#     bucket = <bucket-name> # must exist in the AWS account
+#     key = "mymongoapp/state.tfstate"  #path inside the bucket
+#     region = "eu-west-1" # no need to be in same region of created server and its resources
+#    }
+# }
 
 provider "aws" {
     region = "eu-west-1"
