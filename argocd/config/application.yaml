@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oauth2-proxy-dev
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: oauth2-proxy-chart
+    repoURL: 'https://github.com/hossamradwan/mongo-express_mongo_app'
+    targetRevision: HEAD
+  project: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
