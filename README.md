@@ -71,6 +71,11 @@ Username: admin <br />
 Password: is found in secret "argocd-initial-admin-secret" <br />
 An SSO using GitHub is also possible with dex integration.<br />
 <br />
+To connect ArgoCD to the GitHub repo, add the repo in Settings/Repositories <br />
+Check images 6 and 7 in "images" folder. <br />
+<br />
+Check "images" folder for sample screenshots.<br />
+<br />
 The installation files are taken from ArgoCD repo "https://github.com/argoproj/argo-cd/tree/v2.8.4"
 
 ## Deploying app
