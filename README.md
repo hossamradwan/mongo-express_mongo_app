@@ -36,8 +36,8 @@ kubectl apply --filename https://github.com/bitnami-labs/sealed-secrets/releases
 enc=$(kubectl --namespace default create secret generic mongodb-secret --dry-run=client --from-literal mongo-root-username=username --from-literal mongo-root-password=password --output json | kubeseal | jq -r '.spec.encryptedData') \
 && enc_user=$(echo $enc | jq -r '.["mongo-root-username"]') \
 && enc_pass=$(echo $enc | jq -r '.["mongo-root-password"]') \
-&& sed -i 's|^mongoRootUsername:.*|mongoRootUsername: '"$enc_user"'|'  app/app-values/mongodb-values.yaml \
-&& sed -i 's|^mongoRootPassword:.*|mongoRootPassword: '"$enc_pass"'|'  app/app-values/mongodb-values.yaml
+&& sed -i 's|^mongoRootUsername:.*|mongoRootUsername: '"$enc_user"'|'  app/app-values/mongo/values.yaml \
+&& sed -i 's|^mongoRootPassword:.*|mongoRootPassword: '"$enc_pass"'|'  app/app-values/mongo/values.yaml
 ```
   * Encrypt mongo-express secret.
   * The following command encrypts the mongo-express secret using kubeseal tool. kubeseal connect to the sealed secret controller, encrypt the secret values (mongo-root-username=username, mongo-root-password=password), and save the encrypted values in app/app-values/mongo-express-values.yaml.
@@ -45,15 +45,46 @@ enc=$(kubectl --namespace default create secret generic mongodb-secret --dry-run
 enc=$(kubectl --namespace default create secret generic mongo-express-secret --dry-run=client --from-literal mongo-root-username=username --from-literal mongo-root-password=password --output json | kubeseal | jq -r '.spec.encryptedData') \
 && enc_user=$(echo $enc | jq -r '.["mongo-root-username"]') \
 && enc_pass=$(echo $enc | jq -r '.["mongo-root-password"]') \
-&& sed -i 's|^mongoRootUsername:.*|mongoRootUsername: '"$enc_user"'|'  app/app-values/mongo-express-values.yaml \
-&& sed -i 's|^mongoRootPassword:.*|mongoRootPassword: '"$enc_pass"'|'  app/app-values/mongo-express-values.yaml
+&& sed -i 's|^mongoRootUsername:.*|mongoRootUsername: '"$enc_user"'|'  app/app-values/mongo-express/values.yaml \
+&& sed -i 's|^mongoRootPassword:.*|mongoRootPassword: '"$enc_pass"'|'  app/app-values/mongo-express/values.yaml
 ```
+
+## Installing ArgoCD
+ArgoCD is installed using the installation file in argocd/manifests/install <br />
+This is version 2.8.4 of ArgoCD with cluster installation which gives ArgoCD access to the whole cluster.<br />
+```
+kubectl create ns argocd
+kubectl -n argocd apply -f argocd/manifests/install.yaml
+```
+The "argocd/manifests/base" contains all the ArgoCD files separated by each component in case an edit is needed in a spcific component.<br />
+The "argocd/config" contains the files needed to deploy the helm charts.<br />
+1- "project.yaml" to create a project in ArgoCD 
+2- "applicationset.yaml" to deploy MongoDB and Mongo Express charts. <br />
+3- "application.yaml" to deploy oauth2-proxy charts. <br />
+<br />
+To access ArgoCd UI use: 
+```
+kubectl -n argocd port-forward service/argocd-server 9099:80
+```
+To Login to ArgoCD use the following credentials: <br />
+Username: admin <br />
+Password: is found in secret "argocd-initial-admin-secret" <br />
+An SSO using GitHub is also possible with dex integration.<br />
+<br />
+The installation files are taken from ArgoCD repo "https://github.com/argoproj/argo-cd/tree/v2.8.4"
+
 ## Deploying app
-The app is deployed using helm
+No changes in the app files. only a change in the structure of directory "app/app-values".<br />
+Instead of using helm to deploy the app
 ```
-helm install -f app/app-values/mongodb-values.yaml mongodb app/app-chart
-helm install -f app/app-values/mongo-express-values.yaml mongo-express app/app-chart
+helm install -f app/app-values/mongo/values.yaml mongodb app/app-chart
+helm install -f app/app-values/mongo-express/values.yaml mongo-express app/app-chart
 ```
+ArgoCD files are used: <br />
+```
+kubectl apply -f argocd/config/applicationset.yaml
+```
+Applying the above file directs ArgoCD to use the "app-chart" and the values file in "app-values" to create the MongoDB and Mongo Express charts.
 ## Allowing public access
 1- Install ingress nginx controller
 ```
@@ -73,6 +104,10 @@ enc=$(kubectl --namespace default create secret generic oauth2-proxy-secret --dr
 ```
 helm install oauth2-proxy oauth2-proxy-chart
 ```
+or using ArgoCD
+```
+kubectl apply -f argocd/config/application.yaml
+```
 ## Refrences
 https://hub.docker.com/_/mongo-express <br />
 https://hub.docker.com/_/mongo <br />
@@ -80,4 +115,6 @@ https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest <br /
 https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest <br />
 https://github.com/bitnami-labs/sealed-secrets <br />
 https://kubernetes.github.io/ingress-nginx/deploy/ <br />
-https://kubernetes.github.io/ingress-nginx/examples/auth/oauth-external-auth/
+https://kubernetes.github.io/ingress-nginx/examples/auth/oauth-external-auth/ <br />
+https://github.com/argoproj/argo-cd/tree/v2.8.4 <br />
+
