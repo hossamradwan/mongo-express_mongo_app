@@ -58,7 +58,7 @@ kubectl -n argocd apply -f argocd/manifests/install.yaml
 ```
 The "argocd/manifests/base" contains all the ArgoCD files separated by each component in case an edit is needed in a spcific component.<br />
 The "argocd/config" contains the files needed to deploy the helm charts.<br />
-1- "project.yaml" to create a project in ArgoCD 
+1- "project.yaml" to create a project in ArgoCD.<br />
 2- "applicationset.yaml" to deploy MongoDB and Mongo Express charts. <br />
 3- "application.yaml" to deploy oauth2-proxy charts. <br />
 <br />
